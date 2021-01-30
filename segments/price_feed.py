@@ -1,4 +1,5 @@
 import requests
+import time
 from powerline.segments import Segment, with_docstring
 from powerline.theme import requires_segment_info, requires_filesystem_watcher
 
@@ -8,9 +9,10 @@ class BTCPriceFeedSegment(Segment):
     divider_highlight_group = None
 
     def __call__(self, pl, segment_info, create_watcher):
-        resp_btc = requests.get('https://api.coinbase.com/v2/prices/btc-usd/spot?currency=usd')
+        time.sleep(10)
+        resp = requests.get('https://api.binance.com/api/v3/avgPrice?symbol=BTCUSDT')
         return [{
-            'contents': f'BTC {resp_btc.json()["data"]["amount"]}',
+            'contents': f'BTC {int(float(resp.json()["price"]))}',
             'highlight_groups': ['btc'],
         }]
 
@@ -23,10 +25,27 @@ class ETHPriceFeedSegment(Segment):
     divider_highlight_group = None
 
     def __call__(self, pl, segment_info, create_watcher):
-        resp = requests.get('https://api.coinbase.com/v2/prices/eth-usd/spot?currency=usd')
+        time.sleep(10)
+        resp = requests.get('https://api.binance.com/api/v3/avgPrice?symbol=ETHUSDT')
         return [{
-            'contents': f'ETH {resp.json()["data"]["amount"]}',
+            'contents': f'ETH {int(float(resp.json()["price"]))}',
             'highlight_groups': ['eth'],
         }]
 
 eth = with_docstring(ETHPriceFeedSegment(), '''Return a custom segment.''')
+
+
+@requires_filesystem_watcher
+@requires_segment_info
+class SNXPriceFeedSegment(Segment):
+    divider_highlight_group = None
+
+    def __call__(self, pl, segment_info, create_watcher):
+        time.sleep(10)
+        resp = requests.get('https://api.binance.com/api/v3/avgPrice?symbol=SNXUSDT')
+        return [{
+            'contents': f'SNX {str(round(resp.json()["price"], 2))}',
+            'highlight_groups': ['snx'],
+        }]
+
+snx = with_docstring(SNXPriceFeedSegment(), '''Return a custom segment.''')

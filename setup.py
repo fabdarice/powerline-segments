@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="segments",
-    version="0.0.1",
+    version="0.0.2",
     author="Fabrice Darice",
     author_email="fab_da_rice@hotmail.fr",
     description="Custom Powerline Segments",
