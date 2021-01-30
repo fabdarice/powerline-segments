@@ -44,7 +44,7 @@ class SNXPriceFeedSegment(Segment):
         time.sleep(10)
         resp = requests.get('https://api.binance.com/api/v3/avgPrice?symbol=SNXUSDT')
         return [{
-            'contents': f'SNX {str(round(resp.json()["price"], 2))}',
+            'contents': f'SNX {str(round(float(resp.json()["price"]), 2))}',
             'highlight_groups': ['snx'],
         }]
 
